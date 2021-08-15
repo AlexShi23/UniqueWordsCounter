@@ -24,7 +24,7 @@ namespace UniqueWordsCounter.ConsoleUI
             Console.WriteLine("Введите список разделителей: (для завершения введите end)");
             List<string> separators = new List<string>();
             var separator = Console.ReadLine();
-            while (separator != "end")
+            while (separator != "end" || separators.Count == 0)
             {
                 separators.Add(separator);
                 separator = Console.ReadLine();

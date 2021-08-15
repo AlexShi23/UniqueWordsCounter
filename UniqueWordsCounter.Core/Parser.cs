@@ -2,6 +2,7 @@
 using AngleSharp.Dom;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,10 @@ namespace UniqueWordsCounter.Core
             }
             catch (Exception ex)
             {
-                // логгирование ошибки
+                using (StreamWriter sw = new StreamWriter("ErrorsLog.txt", true, System.Text.Encoding.Default))
+                {
+                    sw.WriteLine(DateTime.Now.ToString() + " - " + ex.Message); // логгирование ошибки в текстовый файл
+                }
                 throw ex;
             }
 
@@ -45,7 +49,10 @@ namespace UniqueWordsCounter.Core
             }
             catch (Exception ex)
             {
-                // логгирование ошибки
+                using (StreamWriter sw = new StreamWriter("ErrorsLog.txt", true, System.Text.Encoding.Default))
+                {
+                    sw.WriteLine(DateTime.Now.ToString() + " - " + ex.Message); // логгирование ошибки в текстовый файл
+                }
                 throw ex;
             }
             return text;
