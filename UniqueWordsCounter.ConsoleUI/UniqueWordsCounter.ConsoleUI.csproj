@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="0.16.0" />
+    <ProjectReference Include="..\UniqueWordsCounter.Core\UniqueWordsCounter.Core.csproj" />
   </ItemGroup>
 
 </Project>

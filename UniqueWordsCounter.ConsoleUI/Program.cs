@@ -1,50 +1,40 @@
-﻿using AngleSharp;
-using AngleSharp.Dom;
-using AngleSharp.Html.Parser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
+using UniqueWordsCounter.Core;
 
 namespace UniqueWordsCounter.ConsoleUI
 {
     class Program
     {
-        public static async Task Main()
+        public static void Main()
         {
-            var config = Configuration.Default.WithDefaultLoader();
-            var address = "https://www.simbirsoft.com/";
-            var context = BrowsingContext.New(config);
-            var document = await context.OpenAsync(address);
-
-            var myFormatter = new MyMarkupFormatter();
-            var text = document.Body.ToHtml(myFormatter);
-
-            string[] words = text.Split(new char[] { ' ', ',', '.', '!', '?', '"', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t' });
-            words = words.Where(x => !string.IsNullOrWhiteSpace(x)) // убираем пустые строки
-                         .Where(x => x.Any(char.IsLetter)) // убираем строки без букв
-                         .ToArray();
-
-            Dictionary<string, uint> res = CountUniqueWords(words);
-
-            foreach (var item in res.OrderByDescending(pair => pair.Value))
-                Console.WriteLine($"{item.Key} - {item.Value}");
-        }
-
-        public static Dictionary<string, uint> CountUniqueWords(string[] words)
-        {
-            Dictionary<string, uint> result = new Dictionary<string, uint>();
-            foreach(var word in words)
+            Console.Write("Введите адрес сайта: ");
+            string address = Console.ReadLine();
+            while (!Uri.IsWellFormedUriString(address, UriKind.Absolute))
             {
-                if (result.ContainsKey(word))
-                    result[word]++;
-                else
-                    result.Add(word, 1);
+                Console.Write("Введён некорректный адрес сайта, попробуйте снова: ");
+                address = Console.ReadLine();
             }
-            return result;
+
+            Console.WriteLine("Введите список разделителей: (для завершения введите end)");
+            List<string> separators = new List<string>();
+            var separator = Console.ReadLine();
+            while (separator != "end")
+            {
+                separators.Add(separator);
+                separator = Console.ReadLine();
+            }
+
+            Parser parser = new Parser(address, separators.ToArray());
+            Dictionary<string, uint> result = parser.GetUniqueWordsList();
+
+            foreach (var item in result.OrderByDescending(pair => pair.Value))
+                Console.WriteLine($"{item.Key} - {item.Value}");
         }
     }
 }

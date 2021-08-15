@@ -2,7 +2,7 @@
 using AngleSharp.Dom;
 using System;
 
-namespace UniqueWordsCounter.ConsoleUI
+namespace UniqueWordsCounter.Core
 {
     public class MyMarkupFormatter : IMarkupFormatter
     {
