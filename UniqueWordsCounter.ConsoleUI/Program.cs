@@ -13,7 +13,7 @@ namespace UniqueWordsCounter.ConsoleUI
     {
         public static void Main()
         {
-            Console.Write("Введите адрес сайта: ");
+            Console.Write("Введите адрес сайта (с указанием протокола): ");
             string address = Console.ReadLine();
             while (!Uri.IsWellFormedUriString(address, UriKind.Absolute))
             {
@@ -21,7 +21,7 @@ namespace UniqueWordsCounter.ConsoleUI
                 address = Console.ReadLine();
             }
 
-            Console.WriteLine("Введите список разделителей: (для завершения введите end)");
+            Console.Write("Введите список разделителей (для завершения введите end): ");
             List<string> separators = new List<string>();
             var separator = Console.ReadLine();
             while (separator != "end" || separators.Count == 0)
@@ -35,6 +35,19 @@ namespace UniqueWordsCounter.ConsoleUI
 
             foreach (var item in result.OrderByDescending(pair => pair.Value))
                 Console.WriteLine($"{item.Key} - {item.Value}");
+
+            Console.WriteLine("Хотите сохранить результат в базу данных? (да/нет)");
+            string answer = Console.ReadLine().ToLower();
+            while(answer != "да" && answer != "нет")
+            {
+                Console.WriteLine("Некорректный ответ, попробуйте снова: ");
+                answer = Console.ReadLine().ToLower();
+            }
+            if (answer == "да")
+            {
+                parser.SaveToDatabase(result);
+                Console.WriteLine("Результат сохранён в базу данных");
+            }
         }
     }
 }

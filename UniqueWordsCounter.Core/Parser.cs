@@ -1,12 +1,13 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
+using System.Data.SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UniqueWordsCounter.Core
+namespace UniqueWordsCounter.Core 
 {
     public class Parser
     {
@@ -66,7 +67,7 @@ namespace UniqueWordsCounter.Core
                          .ToArray();
         }
 
-        public Dictionary<string, uint> CountUniqueWords(string[] words)
+        public Dictionary<string, uint> CountUniqueWords(string[] words) 
         {
             Dictionary<string, uint> result = new Dictionary<string, uint>();
             foreach (var word in words)
@@ -77,6 +78,29 @@ namespace UniqueWordsCounter.Core
                     result.Add(word, 1);
             }
             return result;
+        }
+
+        public void SaveToDatabase(Dictionary<string, uint> items)
+        {
+            string connectionString = @"URI=file:test.db";
+
+            using var con = new SQLiteConnection(connectionString);
+            con.Open();
+
+            using var cmd = new SQLiteCommand(con);
+            string tableName = Url.Split(new string[] { "//" }, StringSplitOptions.None)[1].Replace("/", "_").Replace(".", "_");
+
+            cmd.CommandText = $"DROP TABLE IF EXISTS {tableName}";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $@"CREATE TABLE {tableName}(word TEXT PRIMARY KEY,count INT)";
+            cmd.ExecuteNonQuery();
+
+            foreach (var item in items)
+            {
+                cmd.CommandText = $"INSERT INTO {tableName}(word, count) VALUES('{item.Key}',{item.Value})";
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
