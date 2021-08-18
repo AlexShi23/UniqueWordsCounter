@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>UniqueWordsCounter</title>
+</head>
+
+<body class="flex-fill">
+    <div class="container">
+        <div style="margin: 38px;">
+            <h1 class="text-center" style="font-weight: bold;">Подсчёт уникальных слов на сайте</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 text-center">
+                <h2 class="text-center">Адрес сайта</h2><input class="form-control-lg w-100" type="url" style="text-align: center;" placeholder="https://www.simbirsoft.com/ " required="">
+            </div>
+            <div class="col" style="text-align: center;">
+                <h2 class="text-center" style="text-align: center;">Список разделителей</h2><input class="form-control-lg flex-fill w-100" type="text" style="text-align: center;width: 250;" placeholder="{' ', ',', '.', '! ', '?','&quot;', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t'} " required="">
+            </div>
+            <div class="col-lg-2 d-lg-flex align-items-lg-end"><button class="btn btn-primary btn-lg d-lg-flex justify-content-lg-center align-items-lg-end w-100" type="submit" style="text-align: center;height: 50;margin: 1px;">Посчитать</button></div>
+        </div>
+        <div class="row">
+            <div class="col"><textarea class="form-control-lg w-100" placeholder="Результат" rows="10" style="margin-top: 20px;" readonly="" disabled=""></textarea></div>
+        </div>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

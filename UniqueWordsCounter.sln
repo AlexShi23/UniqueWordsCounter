@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniqueWordsCounter.ConsoleU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniqueWordsCounter.Core", "UniqueWordsCounter.Core\UniqueWordsCounter.Core.csproj", "{460002DF-063E-42B6-98D0-9137F2E99E76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniqueWordsCounter.WebUI", "UniqueWordsCounter.WebUI\UniqueWordsCounter.WebUI.csproj", "{B59BEE76-58D7-4B7D-8964-649ECC86DABA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{460002DF-063E-42B6-98D0-9137F2E99E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{460002DF-063E-42B6-98D0-9137F2E99E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{460002DF-063E-42B6-98D0-9137F2E99E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B59BEE76-58D7-4B7D-8964-649ECC86DABA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B59BEE76-58D7-4B7D-8964-649ECC86DABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B59BEE76-58D7-4B7D-8964-649ECC86DABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B59BEE76-58D7-4B7D-8964-649ECC86DABA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
