@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace UniqueWordsCounter.Core 
 {
@@ -35,10 +36,7 @@ namespace UniqueWordsCounter.Core
             }
             catch (Exception ex)
             {
-                using (StreamWriter sw = new StreamWriter("ErrorsLog.txt", true, System.Text.Encoding.Default))
-                {
-                    sw.WriteLine(DateTime.Now.ToString() + " - " + ex.Message); // логгирование ошибки в текстовый файл
-                }
+                LogToFile(ex.Message);
                 throw ex;
             }
 
@@ -50,10 +48,7 @@ namespace UniqueWordsCounter.Core
             }
             catch (Exception ex)
             {
-                using (StreamWriter sw = new StreamWriter("ErrorsLog.txt", true, System.Text.Encoding.Default))
-                {
-                    sw.WriteLine(DateTime.Now.ToString() + " - " + ex.Message); // логгирование ошибки в текстовый файл
-                }
+                LogToFile(ex.Message);
                 throw ex;
             }
             return text;
@@ -61,9 +56,12 @@ namespace UniqueWordsCounter.Core
 
         public string[] SplitWords(string text)
         {
+            Regex trimmer = new Regex(@"\s\s+"); // регулярное выражение, чтобы убрать несколько пробелов
             string[] words = text.Split(this.Separators, StringSplitOptions.None);
             return words.Where(x => !string.IsNullOrWhiteSpace(x)) // убираем пустые строки
                          .Where(x => x.Any(char.IsLetter)) // убираем строки без букв
+                         .Select(x => x.Replace("\n", "")) // убираем переносы строки
+                         .Select(x => trimmer.Replace(x, "")) // убираем лишние пробелы
                          .ToArray();
         }
 
@@ -79,7 +77,13 @@ namespace UniqueWordsCounter.Core
             }
             return result;
         }
-
+        public void LogToFile(string message)
+        {
+            using (StreamWriter sw = new StreamWriter("ErrorsLog.txt", true, System.Text.Encoding.Default))
+            {
+                sw.WriteLine(DateTime.Now.ToString() + " - " + message); // логгирование ошибки в текстовый файл
+            }
+        }
         public void SaveToDatabase(Dictionary<string, uint> items)
         {
             string connectionString = @"URI=file:test.db";

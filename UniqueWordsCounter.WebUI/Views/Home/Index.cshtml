@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model ParserViewModel
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -13,21 +11,59 @@
 
 <body class="flex-fill">
     <div class="container">
-        <div style="margin: 38px;">
-            <h1 class="text-center" style="font-weight: bold;">Подсчёт уникальных слов на сайте</h1>
-        </div>
-        <div class="row">
-            <div class="col-lg-3 text-center">
-                <h2 class="text-center">Адрес сайта</h2><input class="form-control-lg w-100" type="url" style="text-align: center;" placeholder="https://www.simbirsoft.com/ " required="">
+        @using (Html.BeginForm("Update", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div style="margin: 38px;">
+                <h1 class="text-center" style="font-weight: bold;">Подсчёт уникальных слов на сайте</h1>
             </div>
-            <div class="col" style="text-align: center;">
-                <h2 class="text-center" style="text-align: center;">Список разделителей</h2><input class="form-control-lg flex-fill w-100" type="text" style="text-align: center;width: 250;" placeholder="{' ', ',', '.', '! ', '?','&quot;', ';', ':', '[', ']', '(', ')', '\n', '\r', '\t'} " required="">
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <h2 class="text-center">Адрес сайта</h2>
+                    @Html.TextAreaFor(model => model.Url, new
+                    {
+                        @id = "url",
+                        @class = "form-control-lg w-100",
+                        @placeholder = "https://www.simbirsoft.com/",
+                        @required = "required",
+                        @type = "url",
+                        @style = "text-align: center; resize: none; overflow: hidden;"
+                    })
+                </div>
+                <div class="col" style="text-align: center;">
+                    <h2 class="text-center" style="text-align: center;">Список разделителей</h2>
+                    @Html.TextAreaFor(model => model.Separators, new
+                    {
+                        @id = "separators",
+                        @class = "form-control-lg flex-fill w-100",
+                        @placeholder = "' ', ',', '.', '! ', '?','\"', ';', ':', '[', ']', '(', ')', '\\n', '\\r', '\\t'",
+                        @required = "required",
+                        @type = "text",
+                        @style = "text-align: center; resize: none; overflow: hidden;"
+                    })
+                </div>
+                <div class="col-lg-2 d-lg-flex align-items-lg-end">
+                    <button class="btn btn-primary btn-lg d-lg-flex justify-content-lg-center align-items-lg-end w-100" type="submit" style="text-align: center; margin: 6px;">Посчитать</button>
+                </div>
             </div>
-            <div class="col-lg-2 d-lg-flex align-items-lg-end"><button class="btn btn-primary btn-lg d-lg-flex justify-content-lg-center align-items-lg-end w-100" type="submit" style="text-align: center;height: 50;margin: 1px;">Посчитать</button></div>
-        </div>
+        }
         <div class="row">
-            <div class="col"><textarea class="form-control-lg w-100" placeholder="Результат" rows="10" style="margin-top: 20px;" readonly="" disabled=""></textarea></div>
+            <div class="col">
+                @Html.TextAreaFor(model => model.Result, new
+                {
+                   @id = "result",
+                   @class = "form-control-lg w-100",
+                   @readonly = "readonly",
+                   @placeholder = "Результат",
+                   @style = "margin-top: 20px; height: 200px;"
+                })
+            </div>
         </div>
+        @if (Model != null && Model.Error != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @Model.Error
+            </div>
+        }
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
