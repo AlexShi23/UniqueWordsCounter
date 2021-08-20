@@ -1,4 +1,6 @@
 ﻿@model ParserViewModel
+@using UniqueWordsCounter.Core;
+@using Microsoft.AspNetCore.Components.Web
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -48,7 +50,7 @@
         }
         <div class="row">
             <div class="col">
-                @Html.TextAreaFor(model => model.Result, new
+                @Html.TextAreaFor(model => model.ResultString, new
                 {
                    @id = "result",
                    @class = "form-control-lg w-100",
@@ -60,9 +62,23 @@
         </div>
         @if (Model != null && Model.Error != null)
         {
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
                 @Model.Error
             </div>
+        }
+        @if (Model != null && Model.Result != null)
+        {
+            @using (Html.BeginForm("SaveToDb", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(model => model.Url)
+                @Html.HiddenFor(model => model.Result)
+                <div class="alert alert-success" role="alert" style="margin-top: 20px;">
+                    <div class="row">
+                        <p style="margin-left: 15px; margin-top: 10px;">Подсчёт выполнен успешно. Хотите сохранить результат в базу данных?</p>
+                        <button type="submit" class="btn btn-success btn-sm" style="height: 80%; margin-left: 15px; margin-top: 10px;">Да</button>
+                    </div>
+                </div>
+            }
         }
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

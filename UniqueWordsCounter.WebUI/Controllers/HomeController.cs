@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using UniqueWordsCounter.Core;
 using UniqueWordsCounter.WebUI.Models;
 
 namespace UniqueWordsCounter.WebUI.Controllers
@@ -20,6 +21,12 @@ namespace UniqueWordsCounter.WebUI.Controllers
         public IActionResult Update(ParserViewModel model)
         {
             return View("Index", model);
+        }
+
+        public IActionResult SaveToDb(ParserViewModel model)
+        {
+            DbSaver.SaveToDatabase(model.Result, model.Url);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

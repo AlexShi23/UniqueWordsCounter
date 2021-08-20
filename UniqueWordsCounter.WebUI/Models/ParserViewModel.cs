@@ -10,20 +10,22 @@ namespace UniqueWordsCounter.WebUI.Models
     {
         public string Url { get; set; }
         public string Separators { get; set; }
-        private string result;
-        public string Result
+        public Parser parser;
+        public Dictionary<string, uint> Result { get; set; }
+        private string resultString;
+        public string ResultString
         {
             get
             {
-                if (result == null)
+                if (resultString == null)
                 {
-                    result = Count();
+                    resultString = Count();
                 }
-                return result;
+                return resultString;
             }
             set
             {
-                result = value;
+                resultString = value;
             }
         }
         public string Error { get; set; }
@@ -39,21 +41,29 @@ namespace UniqueWordsCounter.WebUI.Models
 
         private string Count()
         {
-            string result = "";
+            string resultString = "";
             if (Validate())
             {
                 string[] separators = Separators.Split(", ");
                 for (int i = 0; i < separators.Length; i++)
                     separators[i] = separators[i].Trim('\'');
+                    
+                parser = new Parser(Url, separators);
 
-                Parser parser = new Parser(Url, separators);
+                try
+                {
+                    Result = parser.GetUniqueWordsList();
+                }
+                catch(Exception ex)
+                {
+                    Error = ex.Message;
+                    return "";
+                }
 
-                Dictionary<string, uint> dict = parser.GetUniqueWordsList();
-
-                foreach (var item in dict.OrderByDescending(pair => pair.Value))
-                    result += $"{item.Key} - {item.Value}\n";
+                foreach (var item in Result.OrderByDescending(pair => pair.Value))
+                    resultString += $"{item.Key} - {item.Value}\n";
             }
-            return result;
+            return resultString;
         }
 
         public bool Validate()
@@ -63,11 +73,13 @@ namespace UniqueWordsCounter.WebUI.Models
             if (string.IsNullOrEmpty(Url))
             {
                 Error = "Вы ввели пустой адрес сайта!";
+                Logger.LogToFile(Error);
                 return false;
             }
             else if (string.IsNullOrEmpty(Separators))
             {
                 Error = "Вы ввели пустой список разделителей!";
+                Logger.LogToFile(Error);
                 return false;
             }
             else

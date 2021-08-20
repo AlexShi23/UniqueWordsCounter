@@ -36,7 +36,7 @@ namespace UniqueWordsCounter.Core
             }
             catch (Exception ex)
             {
-                LogToFile(ex.Message);
+                Logger.LogToFile(ex.Message);
                 throw ex;
             }
 
@@ -48,7 +48,7 @@ namespace UniqueWordsCounter.Core
             }
             catch (Exception ex)
             {
-                LogToFile(ex.Message);
+                Logger.LogToFile(ex.Message);
                 throw ex;
             }
             return text;
@@ -76,35 +76,6 @@ namespace UniqueWordsCounter.Core
                     result.Add(word, 1);
             }
             return result;
-        }
-        public void LogToFile(string message)
-        {
-            using (StreamWriter sw = new StreamWriter("ErrorsLog.txt", true, System.Text.Encoding.Default))
-            {
-                sw.WriteLine(DateTime.Now.ToString() + " - " + message); // логгирование ошибки в текстовый файл
-            }
-        }
-        public void SaveToDatabase(Dictionary<string, uint> items)
-        {
-            string connectionString = @"URI=file:test.db";
-
-            using var con = new SQLiteConnection(connectionString);
-            con.Open();
-
-            using var cmd = new SQLiteCommand(con);
-            string tableName = Url.Split(new string[] { "//" }, StringSplitOptions.None)[1].Replace("/", "_").Replace(".", "_");
-
-            cmd.CommandText = $"DROP TABLE IF EXISTS {tableName}";
-            cmd.ExecuteNonQuery();
-
-            cmd.CommandText = $@"CREATE TABLE {tableName}(word TEXT PRIMARY KEY,count INT)";
-            cmd.ExecuteNonQuery();
-
-            foreach (var item in items)
-            {
-                cmd.CommandText = $"INSERT INTO {tableName}(word, count) VALUES('{item.Key}',{item.Value})";
-                cmd.ExecuteNonQuery();
-            }
         }
     }
 }

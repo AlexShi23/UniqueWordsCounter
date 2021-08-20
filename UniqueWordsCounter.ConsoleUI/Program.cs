@@ -45,7 +45,7 @@ namespace UniqueWordsCounter.ConsoleUI
             }
             if (answer == "да")
             {
-                parser.SaveToDatabase(result);
+                DbSaver.SaveToDatabase(result, address);
                 Console.WriteLine("Результат сохранён в базу данных");
             }
         }
