@@ -82,6 +82,12 @@ namespace UniqueWordsCounter.WebUI.Models
                 Logger.LogToFile(Error);
                 return false;
             }
+            else if (!Url.Contains("http://") && !Url.Contains("https://"))
+            {
+                Error = "Вы ввели адрес сайта без протокола!";
+                Logger.LogToFile(Error);
+                return false;
+            }
             else
             {
                 return true;
